@@ -74,6 +74,10 @@ g:keeppad_no_hl					*g:keeppad_no_hl*
 	Clear highlight of the padding(|hl-SignColumn|) if this variable is 1.
 	Default: 1
 
+g:keeppad_hook_number_option			*g:keeppad_hook_number_option*
+	Toggle keeppad with the update of the 'number' option.
+	Default: 1
+
 ==============================================================================
 CHANGELOG					*keeppad-changelog*
 

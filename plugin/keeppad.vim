@@ -28,6 +28,9 @@ sign define keeppad text=ㅤ texthl=SignColumn
 
 let g:keeppad_autopadding = get(g:, 'keeppad_autopadding', 1)
 let g:keeppad_no_hl = get(g:, 'keeppad_no_hl', 1)
+let g:keeppad_hook_number_option = get(g:, 'keeppad_hook_number_option', 1)
+
+let s:ON = g:keeppad_autopadding
 
 command! KeeppadOn  call s:on()
 command! KeeppadOff call s:off()
@@ -35,23 +38,46 @@ command! KeeppadOff call s:off()
 if g:keeppad_autopadding
   augroup plugin-keeppad-dummysign
     autocmd!
-    autocmd BufWinEnter * call <SID>dummysign()
+    autocmd BufWinEnter * if !&number | call <SID>dummysign() | endif
     autocmd VimEnter * call <SID>clear_auto()
+    if g:keeppad_hook_number_option
+      autocmd OptionSet * call s:optionset()
+    endif
   augroup END
+
+
+function! s:optionset() abort
+  if s:ON && expand('<amatch>') is# 'number'
+    if v:option_new
+      call s:dummysign_off()
+    else
+      call s:clear_enable_auto()
+      call s:dummysign()
+    endif
+  endif
+endfunction
 endif
 
 function! s:dummysign() abort
   execute printf('sign place %d line=%d name=keeppad buffer=%d', s:ID, 1, bufnr('%'))
 endfunction
 
+function! s:dummysign_off() abort
+  execute printf('sign unplace %d buffer=%d', s:ID, bufnr('%'))
+endfunction
+
 function! s:clear_auto() abort
   if g:keeppad_no_hl
     call s:clear_hi()
-    augroup plugin-keeppad-clear-hi
-      autocmd!
-      autocmd ColorScheme * call <SID>clear_hi()
-    augroup END
+    call s:clear_enable_auto()
   endif
+endfunction
+
+function! s:clear_enable_auto() abort
+  augroup plugin-keeppad-clear-hi
+    autocmd!
+    autocmd ColorScheme * call <SID>clear_hi()
+  augroup END
 endfunction
 
 function! s:clear_hi() abort
@@ -71,12 +97,14 @@ function! s:clear_hi_off() abort
 endfunction
 
 function! s:on() abort
+  let s:ON = 1
   call s:clear_auto()
   call s:dummysign()
 endfunction
 
 function! s:off() abort
-  execute printf('sign unplace %d buffer=%d', s:ID, bufnr('%'))
+  let s:ON = 0
+  call s:dummysign_off()
   call s:clear_hi_off()
 endfunction
 
