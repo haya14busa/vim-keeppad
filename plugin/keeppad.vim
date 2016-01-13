@@ -38,7 +38,7 @@ command! KeeppadOff call s:off()
 if g:keeppad_autopadding
   augroup plugin-keeppad-dummysign
     autocmd!
-    autocmd BufWinEnter * if !&number | call <SID>dummysign() | endif
+    autocmd BufWinEnter * if !g:keeppad_hook_number_option || !&number | call <SID>dummysign() | endif
     autocmd VimEnter * call <SID>clear_auto()
     if g:keeppad_hook_number_option
       autocmd OptionSet * call s:optionset()
