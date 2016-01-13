@@ -3,7 +3,8 @@
 
 Keep padding! If you `:set nonumber`, you can find that there is no space at
 the left side of window and you might think it's not beautiful. vim-keeppad
-solves this problem.
+solves this problem. vim-keeppad adds padding only when 'number' option is
+turned off (:set nonumber) by default.
 
 ![](https://i.gyazo.com/2a6962e7ecc6f024a0fc26dbfbe21536.png)
 
