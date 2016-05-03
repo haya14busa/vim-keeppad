@@ -23,8 +23,7 @@ set cpo&vim
 " => 1148
 let s:ID = get(g:, 'keeppad_id', 1148)
 
-" There is a transparent char after 'text='
-sign define keeppad text=ㅤ texthl=SignColumn
+sign define keeppad
 
 let g:keeppad_autopadding = get(g:, 'keeppad_autopadding', 1)
 let g:keeppad_no_hl = get(g:, 'keeppad_no_hl', 1)
